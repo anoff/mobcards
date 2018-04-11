@@ -1,4 +1,6 @@
 @startuml start
+!includeurl https://raw.github.com/anoff/smartcards/master/assets/style.iuml
+
 :Initiator: as p0
 :Player #1: as p1
 :Player #2: as p2
@@ -27,14 +29,4 @@ qs ..> p2
 p0 --> a
 p1 --> a
 p2 --> a
-
-skinparam {
-  actorBackgroundColor    white
-  actorBorderColor        black
-  ArrowColor              black
-  noteBackgroundColor     whiteSmoke
-  noteBorderColor         black
-  usecaseBackgroundColor  lavender
-  usecaseBorderColor      black
-}
 @enduml

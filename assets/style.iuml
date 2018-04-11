@@ -1,0 +1,15 @@
+@startuml stylesheet
+skinparam {
+  actorBackgroundColor    white
+  actorBorderColor        black
+  ArrowColor              black
+  noteBackgroundColor     whiteSmoke
+  noteBorderColor         black
+  stateBackgroundColor    mintcream
+  stateBorderColor        black
+  stateStartColor         limegreen
+  stateEndColor           red
+  usecaseBackgroundColor  lavender
+  usecaseBorderColor      black
+}
+@enduml

@@ -1,5 +1,5 @@
 @startuml qa
-scale 500 width
+!includeurl https://raw.github.com/anoff/smartcards/master/assets/style.iuml
 
 state "no game" as ng
 state "game open" as go
@@ -26,14 +26,4 @@ q --> a: ⏰ timeout
 a --> win: players voted on answers
 win --> host
 win --> cards: all Q cards played
-
-skinparam {
-  stateBackgroundColor    mintcream
-  stateBorderColor        black
-  stateStartColor         limegreen
-  stateEndColor           red
-  ArrowColor              black
-  noteBackgroundColor     whiteSmoke
-  noteBorderColor         black
-}
 @enduml
