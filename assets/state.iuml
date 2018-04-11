@@ -1,0 +1,39 @@
+@startuml qa
+scale 500 width
+
+state "no game" as ng
+state "game open" as go
+state "game active" as ga {
+  state "distribute cards" as cards
+  state "selecting host" as host
+  state "show question" as q
+  q : collecting answers from players
+  state "display answers" as a
+  state "present winner" as win
+}
+
+[*] -> ng
+ng --> go : host creates sessions
+go : waiting for players
+go --> go: players join
+go --> ga: 100% players vote
+ga --> cards
+cards : all players get Q&A cards
+cards --> host
+host --> q: host posts a question
+q --> a: players answered
+q --> a: ⏰ timeout
+a --> win: players voted on answers
+win --> host
+win --> cards: all Q cards played
+
+skinparam {
+  stateBackgroundColor    mintcream
+  stateBorderColor        black
+  stateStartColor         limegreen
+  stateEndColor           red
+  ArrowColor              black
+  noteBackgroundColor     whiteSmoke
+  noteBorderColor         black
+}
+@enduml

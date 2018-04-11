@@ -1,0 +1,40 @@
+@startuml start
+:Initiator: as p0
+:Player #1: as p1
+:Player #2: as p2
+
+
+(start game) as start
+(join game) as join
+(elect host) as nHost
+(choose question) as q
+(publish question) as qs
+(post answer) as a
+
+p0 --> start
+start -right-> join
+p1 --> join
+p2 --> join
+join -right-> nHost
+nHost -[hidden]right-> q
+nHost --> p1
+p1 --> q
+q -down-> qs
+qs ..> p0
+qs ..> p1
+qs ..> p2
+
+p0 --> a
+p1 --> a
+p2 --> a
+
+skinparam {
+  actorBackgroundColor    white
+  actorBorderColor        black
+  ArrowColor              black
+  noteBackgroundColor     whiteSmoke
+  noteBorderColor         black
+  usecaseBackgroundColor  lavender
+  usecaseBorderColor      black
+}
+@enduml
