@@ -1,32 +1,37 @@
 @startuml start
 !includeurl https://raw.github.com/anoff/smartcards/master/assets/style.iuml
 
-:Initiator: as p0
-:Player #1: as p1
-:Player #2: as p2
+actor Host as p0
+actor "Player #1" as p1
+actor "Player #2" as p2
 
 
-(start game) as start
-(join game) as join
-(elect host) as nHost
-(choose question) as q
-(publish question) as qs
-(post answer) as a
+usecase "start game" as start
+usecase "join game" as join
 
 p0 --> start
-start -right-> join
+p0 <.. start: session ID
+
+p0 ..> p1: session ID
+p0 ..> p2: session ID
+
+p0 --> join
 p1 --> join
 p2 --> join
-join -right-> nHost
-nHost -[hidden]right-> q
-nHost --> p1
-p1 --> q
-q -down-> qs
-qs ..> p0
-qs ..> p1
-qs ..> p2
 
-p0 --> a
-p1 --> a
-p2 --> a
+actor quizmaster
+actor "Player #1" as p1a
+actor "Player #2" as p2a
+
+usecase "publish question" as qs
+usecase "post answer" as a
+usecase "vote on answers" as v
+
+quizmaster --> qs
+p1a --> a
+p2a --> a
+
+quizmaster --> v
+p1a --> v
+p2a --> v
 @enduml
