@@ -21,4 +21,4 @@ Matchmaking is done via a serverless backend where clients are connected using a
 
 ## application architecture
 
-> todo
+![backend setup](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/anoff/smartcards/master/assets/infra.iuml)

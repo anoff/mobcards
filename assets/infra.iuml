@@ -1,0 +1,24 @@
+@startuml start
+!includeurl https://raw.github.com/anoff/smartcards/master/assets/style.iuml
+
+interface "new game" as start
+interface "join game" as join
+node "session handler" as handler
+node "cleanup task" as clean
+database "session store" as db
+start -- handler
+join -- handler
+
+handler -- db
+
+clean -- db
+
+skinparam {
+  databaseBackgroundColor deepskyblue
+  databaseBorderColor black
+  interfaceBackgroundColor limegreen
+  interfaceBorderColor black
+  nodeBackgroundColor yellow
+  nodeBorderColor black
+}
+@enduml
