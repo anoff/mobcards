@@ -22,3 +22,9 @@ Matchmaking is done via a serverless backend where clients are connected using a
 ## application architecture
 
 ![backend setup](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/anoff/smartcards/master/assets/infra.iuml)
+
+## License
+
+Cards taken from [crhallbergs collection of decks](https://github.com/crhallberg/json-against-humanity). The originals, his collection as well as all derivatives within this project are licensed under [CC BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/).
+
+Any code in this project is licensed under [MIT](https://opensource.org/licenses/MIT)
