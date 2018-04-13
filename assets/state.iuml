@@ -9,6 +9,7 @@ state "game active" as ga {
   state "show question" as q
   q : collecting answers from players
   state "display answers" as a
+  a : players vote on best (except own)
   state "present winner" as win
 }
 
@@ -24,6 +25,5 @@ host --> q: host posts a question
 q --> a: players answered
 q --> a: ⏰ timeout
 a --> win: players voted on answers
-win --> host
-win --> cards: all Q cards played
+win --> cards
 @enduml

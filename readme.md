@@ -11,17 +11,13 @@ Matchmaking is done via a serverless backend where clients are connected using a
 
 ## game design
 
-![usecase diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/anoff/smartcards/master/assets/usecase.iuml)
+![usecase diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/smartcards/master/assets/usecase.iuml)
 
 > use cases and interactions
 
-![state machine](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/anoff/smartcards/master/assets/state.iuml)
+![state machine](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/smartcards/master/assets/state.iuml)
 
 > game states
-
-## application architecture
-
-![backend setup](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/anoff/smartcards/master/assets/infra.iuml)
 
 ## License
 
