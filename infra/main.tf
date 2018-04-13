@@ -1,21 +1,24 @@
 provider azurerm {}
 
-module "functionapp" {
-  source    = "anoff/functionapp/azurerm"
-  version   = ">=0.4.0"
-  location  = "westeurope"
-  name      = "smartcardsfunc"
-  plan_type = "dedicated"
-  version   = "beta"
+resource "azurerm_resource_group" "smartcards" {
+  name     = "smartcards"
+  location = "westeurope"
+}
 
-  plan_settings {
-    capacity = 1
-    kind     = "Linux"
-    size     = "S1"
-  }
+resource "azurerm_app_service_plan" "host" {
+  name                = "smartcards-host"
+  location            = "${azurerm_resource_group.smartcards.location}"
+  resource_group_name = "${azurerm_resource_group.smartcards.name}"
 
-  site_config {
-    always_on          = true
-    websockets_enabled = true
+  sku {
+    tier = "Free"
+    size = "F1"
   }
+}
+
+resource "azurerm_app_service" "host" {
+  name                = "smartcards0host"
+  location            = "${azurerm_resource_group.smartcards.location}"
+  resource_group_name = "${azurerm_resource_group.smartcards.name}"
+  app_service_plan_id = "${azurerm_app_service_plan.host.id}"
 }

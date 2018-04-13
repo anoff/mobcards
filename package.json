@@ -1,0 +1,29 @@
+{
+  "name": "smartcards",
+  "version": "0.0.1",
+  "description": "quick game of cards against humanity from your mobile",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anoff/smartcards.git"
+  },
+  "keywords": [
+    "cards",
+    "against",
+    "humanity",
+    "nodejs",
+    "webapp"
+  ],
+  "author": "Andreas Offenhaeuser <https://anoff.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anoff/smartcards/issues"
+  },
+  "homepage": "https://github.com/anoff/smartcards#readme",
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
