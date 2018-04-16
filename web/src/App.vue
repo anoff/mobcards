@@ -9,28 +9,38 @@
       </md-app-toolbar>
 
       <md-app-drawer :md-active.sync="menuVisible">
-        <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
+        <md-toolbar class="md-transparent" md-elevation="0">
+          <span>Choose wisely</span>
+
+          <div class="md-toolbar-section-end">
+            <md-button class="md-icon-button md-dense" @click="menuVisible = !menuVisible">
+              <md-icon>keyboard_arrow_left</md-icon>
+            </md-button>
+          </div>
+        </md-toolbar>
 
         <md-list>
-          <md-list-item>
-            <md-icon>move_to_inbox</md-icon>
-            <span class="md-list-item-text">Inbox</span>
-          </md-list-item>
+          <md-button v-bind:href="'#/stats'">
+            <md-list-item>
+              <md-icon>insert_chart</md-icon>
+              <span class="md-list-item-text">Stats</span>
+            </md-list-item>
+          </md-button>
 
-          <md-list-item>
-            <md-icon>send</md-icon>
-            <span class="md-list-item-text">Sent Mail</span>
-          </md-list-item>
+          <md-button v-bind:href="'#/'">
+            <md-list-item>
+              <md-icon>exit_to_app</md-icon>
+              <span class="md-list-item-text">Leave game</span>
+            </md-list-item>
+          </md-button>
 
-          <md-list-item>
-            <md-icon>delete</md-icon>
-            <span class="md-list-item-text">Trash</span>
-          </md-list-item>
+          <md-button v-bind:href="'#/cards'">
+            <md-list-item>
+              <md-icon>info</md-icon>
+              <span class="md-list-item-text">Help</span>
+            </md-list-item>
+          </md-button>
 
-          <md-list-item>
-            <md-icon>error</md-icon>
-            <span class="md-list-item-text">Spam</span>
-          </md-list-item>
         </md-list>
       </md-app-drawer>
 
@@ -44,6 +54,7 @@
 <style lang="css" scoped>
 .md-app {
   border: 1px solid rgba(#000, .12);
+  min-height: 500px;
 }
 
 .md-drawer {
