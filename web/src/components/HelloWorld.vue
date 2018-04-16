@@ -83,11 +83,19 @@
 </template>
 
 <script>
+console.log('yololo')
 export default {
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  }, sockets:{
+    connect: function(){
+      console.log('socket connected')
+    },
+    count: function(val){
+      console.log('this method was fired by the socket server. eg: io.emit("count", data)')
     }
   }
 }
