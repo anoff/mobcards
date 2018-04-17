@@ -9,6 +9,17 @@ Although it works fully remote it is most fun if played in a IRL group.
 
 Matchmaking is done via a serverless backend where clients are connected using a **session token** that gets shared from the host to its friends/players.
 
+## usage
+
+Run node server on port `3000` and webpack dev server on `8080` to develop both with hot reloading and open [localhost:8080](http://localhost:8080)
+
+```sh
+# start dev server 
+npm run dev-server
+# start webpack-dev-server in ./web directory
+npm run dev-client
+```
+
 ## game design
 
 ![usecase diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/smartcards/master/assets/usecase.iuml)
