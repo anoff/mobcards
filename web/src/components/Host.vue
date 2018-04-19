@@ -27,7 +27,8 @@ export default {
   }),
   methods: {
     onConfirm () {
-      
+      // get lobby ID
+      this.$router.push({path: 'lobby', params: {name: this.name }});
     },
     onCancel () {
       this.name = ''
