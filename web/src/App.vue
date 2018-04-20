@@ -20,21 +20,21 @@
         </md-toolbar>
 
         <md-list>
-          <md-button v-bind:href="'#/stats'">
+          <md-button v-bind:href="'#/stats'" v-on:click="menuVisible = !menuVisible">
             <md-list-item>
               <md-icon>insert_chart</md-icon>
               <span class="md-list-item-text">Stats</span>
             </md-list-item>
           </md-button>
 
-          <md-button v-bind:href="'#/'">
+          <md-button v-bind:href="'#/'" v-on:click="menuVisible = !menuVisible">
             <md-list-item>
               <md-icon>exit_to_app</md-icon>
               <span class="md-list-item-text">Leave game</span>
             </md-list-item>
           </md-button>
 
-          <md-button v-bind:href="'#/cards'">
+          <md-button v-bind:href="'#/cards'" v-on:click="menuVisible = !menuVisible">
             <md-list-item>
               <md-icon>info</md-icon>
               <span class="md-list-item-text">Help</span>
