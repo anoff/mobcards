@@ -1,41 +1,15 @@
 <template>
   <div>
+    <span>name: {{ name }}</span>
     <md-list>
+
       <md-divider class="md-inset"></md-divider>
 
-      <md-list-item>
-        <md-avatar>
-          <img src="https://placeimg.com/40/40/people/5" alt="People">
-        </md-avatar>
-
-        <span class="md-list-item-text">Abbey Christansen</span>
+      <md-list-item v-for="(status, p) in players" v-bind:key="p">
+        <span class="md-list-item-text">{{ p }}</span>
 
         <md-button class="md-icon-button md-list-action">
-          <md-icon class="md-primary">chat_bubble</md-icon>
-        </md-button>
-      </md-list-item>
-
-      <md-list-item>
-        <md-avatar>
-          <img src="https://placeimg.com/40/40/people/1" alt="People">
-        </md-avatar>
-
-        <span class="md-list-item-text">Alex Nelson</span>
-
-        <md-button class="md-icon-button md-list-action">
-          <md-icon class="md-primary">chat_bubble</md-icon>
-        </md-button>
-      </md-list-item>
-
-      <md-list-item>
-        <md-avatar>
-          <img src="https://placeimg.com/40/40/people/6" alt="People">
-        </md-avatar>
-
-        <span class="md-list-item-text">Mary Johnson</span>
-
-        <md-button class="md-icon-button md-list-action">
-          <md-icon>chat_bubble</md-icon>
+          <md-icon class="md-primary">{{ status ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
         </md-button>
       </md-list-item>
     </md-list>
@@ -45,16 +19,26 @@
 <script>
 export default {
   name: 'Lobby',
-  data: () => ({
-  }),
+  data () {
+    return {
+      players: {
+        'blablup': false,
+        'basdflkj': true,
+        'moar': false
+      }
+    }
+  },
   methods: {
-    onConfirm () {
-      
+    onVote (proceed) {
+      console.log(this.players)
     },
     onCancel () {
       this.name = ''
     }
-  }
+  },
+  props: [
+    'name'
+  ]
 }
 </script>
 
