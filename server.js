@@ -12,7 +12,7 @@ const cors = [
 
 // Launch server with options and a couple of routes
 server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
-  get('/lobby', ctx => ({ id: lobby.getIds() })),
+  get('/lobby', ctx => lobby.lobbies),
   post('/lobby', ctx => {
     console.log(ctx.data)
     const playerName = ctx.data.name
