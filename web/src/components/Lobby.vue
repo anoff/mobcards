@@ -1,6 +1,7 @@
 <template>
   <div>
-    <span>name: {{ name }}</span>
+    <span>name: {{ name }}</span><br>
+    <span>id: {{ id }}</span>
     <md-list>
 
       <md-divider class="md-inset"></md-divider>
@@ -21,20 +22,8 @@ export default {
   name: 'Lobby',
   data () {
     return {
-      players: [
-        {
-          name: 'blablup',
-          proceed: false
-        },
-        {
-          name: 'basdflkj',
-          proceed: true
-        },
-        {
-          name: 'moar',
-          proceed: false
-        }
-      ]
+      players: [ ],
+      id: this.$route.params.id
     }
   },
   methods: {

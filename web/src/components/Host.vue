@@ -19,7 +19,7 @@
     <md-list>
       <md-list-item v-for="l in lobbies" v-bind:key="l.id">
         <span class="md-list-item-text">{{ l.id }} ({{ l.players.length }})</span>
-        <md-button class="md-icon-button md-list-action">
+        <md-button class="md-icon-button md-list-action" v-on:click="joinLobby(l.id, name)">
           <md-icon>play_circle_outline</md-icon>
         </md-button>
       </md-list-item>
@@ -45,12 +45,17 @@ export default {
     onConfirm () {
       // get lobby ID
       axios.post(`${global.HOST}/lobby`, { name: this.name })
-      .then(id => {
-        this.$router.push({name: 'lobby', params: {name: this.name }});
+      .then(res => {
+        const id = res.data.id
+        this.joinLobby(id, this.name)
       })
     },
     onCancel () {
       this.name = ''
+    },
+    joinLobby(id, name) {
+      console.log(id)
+      this.$router.push({name: 'lobby', params: { id, name }})
     },
     loadLobbies() {
       axios.get(`${global.HOST}/lobby`)
@@ -58,7 +63,6 @@ export default {
         const lobbies = res.data
         this.ids = lobbies.map(l => l.id)
         this.lobbies = lobbies
-        lobbies.forEach(l => console.log(l.players))
       })
     }
   },
