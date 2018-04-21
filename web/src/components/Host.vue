@@ -15,6 +15,15 @@
     <md-button class="md-fab md-primary" v-on:click="active = true">
       <md-icon>add</md-icon>
     </md-button>
+
+    <md-list>
+      <md-list-item v-for="id in ids" v-bind:key="id">
+        <span class="md-list-item-text">{{ id }}</span>
+        <md-button class="md-icon-button md-list-action">
+          <md-icon>play_circle_outline</md-icon>
+        </md-button>
+      </md-list-item>
+    </md-list>
   </div>
 </template>
 
@@ -25,12 +34,16 @@ export default {
   name: 'Host',
   data: () => ({
     active: false,
-    name: null
+    name: null,
+    ids: []
   }),
+  mounted: function () {
+    this.loadLobbies()
+  },
   methods: {
     onConfirm () {
       // get lobby ID
-      axios.post(`${global.HOST}/lobby`)
+      axios.post(`${global.HOST}/lobby`, { name: this.name })
       .then(id => {
         console.log(id)
         console.log(this.name)
@@ -39,6 +52,13 @@ export default {
     },
     onCancel () {
       this.name = ''
+    },
+    loadLobbies() {
+      axios.get(`${global.HOST}/lobby`)
+      .then(res => {
+        console.log(res.data)
+        this.ids = res.data.id
+      })
     }
   },
   sockets:{

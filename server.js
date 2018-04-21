@@ -12,9 +12,14 @@ const cors = [
 
 // Launch server with options and a couple of routes
 server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
-  get('/hello', ctx => 'Hello world'),
+  get('/lobby', ctx => ({ id: lobby.getIds() })),
   post('/lobby', ctx => {
-    return lobby.getFreeId()
+    console.log(ctx.data)
+    const playerName = ctx.data.name
+    const id = lobby.getFreeId()
+    lobby.addLobby(id)
+    lobby.getLobby(id).addPlayer(playerName)
+    return { id: lobby.getFreeId() }
   }),
   // Receive a message from a single socket
   socket('message', ctx => {
