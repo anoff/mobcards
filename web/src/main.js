@@ -12,6 +12,8 @@ Vue.use(VueSocketIO, 'http://localhost:3000')
 Vue.use(VueMaterial)
 Vue.config.productionTip = false
 
+global.HOST = 'http://localhost:3000'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

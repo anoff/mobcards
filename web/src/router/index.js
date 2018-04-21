@@ -19,6 +19,7 @@ export default new Router({
       component: Cards
     },
     { path: '/lobby',
+      name: 'lobby',
       component: Lobby,
       props: true
     }

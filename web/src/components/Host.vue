@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Host',
   data: () => ({
@@ -28,10 +30,26 @@ export default {
   methods: {
     onConfirm () {
       // get lobby ID
-      this.$router.push({path: 'lobby', params: {name: this.name }});
+      axios.post(`${global.HOST}/lobby`)
+      .then(id => {
+        console.log(id)
+        console.log(this.name)
+        this.$router.push({name: 'lobby', params: {name: this.name }});
+      })
     },
     onCancel () {
       this.name = ''
+    }
+  },
+  sockets:{
+    connect () {
+      console.log('connected to chat server')
+    },
+    count (val) {
+      this.count = val.count
+    },
+    message (data) { // this function gets triggered once a socket event of `message` is received
+      this.textarea += data + '\n' // append each new message to the textarea and add a line break
     }
   }
 }
