@@ -5,11 +5,11 @@
 
       <md-divider class="md-inset"></md-divider>
 
-      <md-list-item v-for="(status, p) in players" v-bind:key="p">
-        <span class="md-list-item-text">{{ p }}</span>
+      <md-list-item v-for="p in players" v-bind:key="p.name">
+        <span class="md-list-item-text">{{ p.name }}</span>
 
         <md-button class="md-icon-button md-list-action">
-          <md-icon class="md-primary">{{ status ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
+          <md-icon class="md-primary">{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
         </md-button>
       </md-list-item>
     </md-list>
@@ -21,11 +21,20 @@ export default {
   name: 'Lobby',
   data () {
     return {
-      players: {
-        'blablup': false,
-        'basdflkj': true,
-        'moar': false
-      }
+      players: [
+        {
+          name: 'blablup',
+          proceed: false
+        },
+        {
+          name: 'basdflkj',
+          proceed: true
+        },
+        {
+          name: 'moar',
+          proceed: false
+        }
+      ]
     }
   },
   methods: {
