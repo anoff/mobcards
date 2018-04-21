@@ -10,6 +10,16 @@ const cors = [
   ctx => ctx.method.toLowerCase() === 'options' ? 200 : false
 ]
 
+// clean lobbystore
+setInterval(() => {
+  lobby.lobbies.forEach(l => {
+    l.players.forEach(p => {
+      if ((new Date() - p.updated) > 10) {
+        l.removePlayer(p.name)
+      }
+    })
+  })
+}, 10000)
 // Launch server with options and a couple of routes
 server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
   get('/lobby', ctx => lobby.lobbies),
