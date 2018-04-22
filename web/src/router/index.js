@@ -10,12 +10,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Host',
+      name: 'start',
       component: Host
     },
     {
       path: '/cards',
-      name: 'Cards',
       component: Cards
     },
     { path: '/lobby/:id',

@@ -1,22 +1,11 @@
 <template>
   <div>
-  <md-dialog-prompt
-      :md-active.sync="active"
-      v-model="name"
-      md-title="Want to start a new lobby?"
-      md-input-maxlength="30"
-      md-input-placeholder="Type your name..."
-      md-confirm-text="Done"
-      md-cancel-text="Cancel"
-      @md-cancel="onCancel"
-      @md-confirm="onConfirm" />
-
-    <span v-if="name">name: {{ name }}</span>
-    <md-button class="md-fab md-primary" v-on:click="active = true">
+    <md-button class="md-fab md-primary" v-on:click="createLobby()">
       <md-icon>add</md-icon>
     </md-button>
 
-    <md-list>
+    <md-list class="md-double-line">
+      <md-subheader>Lobbies</md-subheader>
       <md-list-item v-for="l in lobbies" v-bind:key="l.id">
         <span class="md-list-item-text">{{ l.id }} ({{ l.players.length }})</span>
         <md-button class="md-icon-button md-list-action" v-on:click="joinLobby(l.id, name)">
@@ -42,7 +31,7 @@ export default {
     this.loadLobbies()
   },
   methods: {
-    onConfirm () {
+    createLobby() {
       // get lobby ID
       axios.post(`${global.HOST}/lobby`, { name: this.name })
       .then(res => {
@@ -50,12 +39,9 @@ export default {
         this.joinLobby(id, this.name)
       })
     },
-    onCancel () {
-      this.name = ''
-    },
     joinLobby(id, name) {
       console.log(id)
-      this.$router.push({name: 'lobby', params: { id, name }})
+      this.$router.push({name: 'lobby', params: { id }})
     },
     loadLobbies() {
       axios.get(`${global.HOST}/lobby`)

@@ -1,7 +1,18 @@
 <template>
   <div>
+      <md-dialog-prompt
+      :md-active.sync="nameChosen"
+      v-model="name"
+      md-title="Want to start a new lobby?"
+      md-input-maxlength="30"
+      md-input-placeholder="Type your name..."
+      md-cancel-text="Exit"
+      @md-cancel="nameCancel"
+      md-confirm-text="Join"
+      @md-confirm="nameConfirm" />
+
     <span>name: {{ name }}</span><br>
-    <span>id: {{ id }}</span>
+    <span>id: {{ lobbyId }}</span>
     <md-list>
 
       <md-divider class="md-inset"></md-divider>
@@ -20,23 +31,29 @@
 <script>
 export default {
   name: 'Lobby',
+  mounted () {
+    this.$socket.emit('joinLobby', { id: this.lobbyId, })
+  },
   data () {
     return {
       players: [ ],
-      id: this.$route.params.id
+      lobbyId: this.$route.params.id,
+      nameChosen: true,
+      name: ''
     }
   },
   methods: {
+    nameConfirm () {
+      
+    },
     onVote (proceed) {
       console.log(this.players)
     },
-    onCancel () {
-      this.name = ''
+    nameCancel () {
+      this.$router.push({name: 'start'})
     }
   },
-  props: [
-    'name'
-  ]
+  props: []
 }
 </script>
 
