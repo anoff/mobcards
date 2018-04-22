@@ -25,11 +25,9 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
   get('/lobby', ctx => lobby.lobbies),
   post('/lobby', ctx => {
     console.log(ctx.data)
-    const playerName = ctx.data.name
     const id = lobby.getFreeId()
     lobby.addLobby(id)
-    lobby.getLobby(id).addPlayer(playerName)
-    return { id: lobby.getFreeId() }
+    return { id }
   }),
   // Receive a message from a single socket
   socket('message', ctx => {
@@ -40,8 +38,8 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
     console.log('client connected', Object.keys(ctx.io.sockets.sockets))
     ctx.io.emit('count', {msg: 'HI U', count: ctx.io.sockets.sockets.length})
   }),
-  socket('createLobby', ctx => {
-    console.log(ctx)
+  socket('joinLobby', ctx => {
+    console.log(ctx.data)
   }),
   error(ctx => status(500).send(ctx.error.message))
 ])
