@@ -39,7 +39,18 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
     ctx.io.emit('count', {msg: 'HI U', count: ctx.io.sockets.sockets.length})
   }),
   socket('joinLobby', ctx => {
-    console.log(ctx.data)
+    const {id, playerId, name: playerName} = ctx.data
+    let l = lobby.getLobby(id)
+    console.log(l)
+    if (!l) { // in case a non-existant lobby was opened via web link
+      console.log('creating lobby', l)
+      lobby.addLobby(id)
+      l = lobby.getLobby(id)
+    }
+    l.addPlayer(ctx.socket.id, playerId, playerName)
+    const players = l.players
+    console.log(players)
+    l.players.map(p => p.socketId).forEach(s => ctx.io.sockets.sockets[s].emit('lobbyUpdate', players))
   }),
   error(ctx => status(500).send(ctx.error.message))
 ])

@@ -3,9 +3,10 @@
       <md-dialog-prompt
       :md-active.sync="nameChosen"
       v-model="name"
-      md-title="Want to start a new lobby?"
+      md-title="Want to join the lobby?"
       md-input-maxlength="30"
       md-input-placeholder="Type your name..."
+      md-autofocus
       md-cancel-text="Exit"
       @md-cancel="nameCancel"
       md-confirm-text="Join"
@@ -29,22 +30,25 @@
 </template>
 
 <script>
+import uuidv4 from 'uuid/v4'
+
 export default {
   name: 'Lobby',
   mounted () {
-    this.$socket.emit('joinLobby', { id: this.lobbyId, })
+    
   },
   data () {
     return {
       players: [ ],
       lobbyId: this.$route.params.id,
       nameChosen: true,
-      name: ''
+      name: '',
+      playerId: uuidv4()
     }
   },
   methods: {
     nameConfirm () {
-      
+      this.$socket.emit('joinLobby', { id: this.lobbyId, playerId: this.playerId, name: this.name })
     },
     onVote (proceed) {
       console.log(this.players)
@@ -53,7 +57,15 @@ export default {
       this.$router.push({name: 'start'})
     }
   },
-  props: []
+  props: [],
+    sockets:{
+    connect () {
+      console.log('connected to chat server')
+    },
+    lobbyUpdate (data) {
+      this.players = data
+    }
+  }
 }
 </script>
 
