@@ -29,6 +29,7 @@ export default {
   }),
   mounted: function () {
     this.$socket.emit('browseLobbies', '')
+    this.$socket.emit('hello', '')
   },
   methods: {
     createLobby() {

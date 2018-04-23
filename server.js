@@ -24,6 +24,7 @@ setInterval(() => {
       if ((new Date() - p.updated) / 1000 > 10) {
         console.log('deleting idle player', p.id)
         ls.removePlayer(p.id)
+        context.io.sockets.sockets[p.id].emit('timeout', '')
         context.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
       }
     })
@@ -35,6 +36,13 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
     console.log('client connected', ctx.socket.id)
     const playerId = ctx.socket.id
     ls.addPlayer(WAITINGROOM, playerId, 'unknown')
+  }),
+  // assert player into WAITINGROOM
+  socket('hello', ctx => {
+    const player = ls.getLobby(WAITINGROOM).players.find(p => p.id === ctx.socket.id)
+    if (!player) {
+      ls.addPlayer(WAITINGROOM, ctx.socket.id, 'unknown')
+    }
   }),
   socket('disconnect', ctx => {
     console.log('client disconnected', ctx.socket.id)
@@ -69,6 +77,11 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
   }),
   socket('browseLobbies', ctx => {
     ctx.socket.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))})
+  }),
+  socket('changeName', ctx => {
+    console.log('changename', ctx.data)
+    ls.setPlayerName(ctx.data.playerId, ctx.data.name)
+    ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.map(p => p.name).join(' ')}))})
   }),
   socket('voteStart', ctx => {
   }),

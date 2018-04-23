@@ -1,6 +1,6 @@
 <template>
   <div>
-      <md-dialog-prompt
+    <md-dialog-prompt
       :md-active.sync="nameChosen"
       v-model="name"
       md-title="Want to join the lobby?"
@@ -12,6 +12,14 @@
       md-confirm-text="Join"
       @md-confirm="nameConfirm" />
 
+    <md-dialog :md-active.sync="timeout">
+      <md-dialog-title>Your session timed out</md-dialog-title>
+
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="onTimeoutConfirm">Meh</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+    
     <span>name: {{ name }}</span><br>
     <span>id: {{ lobbyId }}</span>
     <md-list>
@@ -42,18 +50,22 @@ export default {
       players: [ ],
       lobbyId: this.$route.params.id,
       nameChosen: true,
+      timeout: false,
       name: '',
-      playerId: uuidv4()
+      playerId: this.$socket.id
     }
   },
   methods: {
     nameConfirm () {
-      this.$socket.emit('joinLobby', { id: this.lobbyId, playerId: this.playerId, name: this.name })
+      this.$socket.emit('changeName', { playerId: this.playerId, name: this.name })
     },
     onVote (proceed) {
       console.log(this.players)
     },
     nameCancel () {
+      this.$router.push({name: 'start'})
+    },
+    onTimeoutConfirm() {
       this.$router.push({name: 'start'})
     }
   },
@@ -64,6 +76,10 @@ export default {
     },
     lobbyUpdate (data) {
       this.players = data
+    },
+    timeout (data) {
+      console.log('TIMEOUT')
+      this.timeout = true
     }
   }
 }
