@@ -64,6 +64,7 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
       ls.removePlayer(playerId)
       ls.addPlayer(lobbyId, playerId, '')
       ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
+      ctx.socket.emit('lobbyJoined', {lobbyId})
     }
   }),
   socket('browseLobbies', ctx => {

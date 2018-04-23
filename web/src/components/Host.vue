@@ -38,15 +38,6 @@ export default {
     joinLobby(id, name) {
       console.log(id)
       this.$socket.emit('joinLobby', {id})
-      //this.$router.push({name: 'lobby', params: { id }})
-    },
-    loadLobbies() {
-      axios.get(`${global.HOST}/lobby`)
-      .then(res => {
-        const lobbies = res.data
-        this.ids = lobbies.map(l => l.id)
-        this.lobbies = lobbies
-      })
     }
   },
   sockets:{
@@ -71,6 +62,9 @@ export default {
           this.lobbies = this.lobbies.filter(l => r.id !== l.id)
         })
       }
+    },
+    lobbyJoined(data) {
+      this.$router.push({name: 'lobby', params: { id: data.lobbyId }})
     }
   }
 }
