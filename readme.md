@@ -30,6 +30,28 @@ npm run dev-client
 
 > game states
 
+## socket events
+
+All communication between clients and the server happens over websockets and is therefore eventbased. Clients fire an event and the reaction is triggered once the server responds. With high latencies this event driven approach _might_ feel unnatural.
+Below is a list of events and senders (S) / receivers (R)
+
+| event name | backend | host | player | description | payload |
+|------------|---------|------|--------|-------------|---------|
+| startLobby | R       | S    | -      | emitted when creating a lobby | |
+| lobbyStarted | S | R | - | received by the creator upon success | {lobbyId} |
+| joinLobby | R | (S) | S | request to join a lobby (creator after reroute to player view) | |
+| lobbyJoined | S | (R) | R | successful lobby join emitted to all players in lobby (incl requesting player) | [players incl. vote status] |
+| voteStart | R | - | S | player votes to start the game | {vote status} |
+| startVoted | S | - | R | inform other players about vote change | [vote status] |
+
+Payloads updates of type `Array` are always in the form of:
+
+```javascript
+{ add: [], remove [], status: [] }
+```
+
+where `add` is a list of players/votes/cards that were added, `remove` resources that have to be removed from local state and `status` is a complete update of the state that should overwrite local state.
+
 ## License
 
 Cards taken from [crhallbergs collection of decks](https://github.com/crhallberg/json-against-humanity). The originals, his collection as well as all derivatives within this project are licensed under [CC BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/).
