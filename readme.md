@@ -37,8 +37,9 @@ Below is a list of events and senders (S) / receivers (R)
 
 | event name | backend | host | player | description | payload |
 |------------|---------|------|--------|-------------|---------|
+| browseLobbies | R | S | S | players that are not in a lobby | |
 | startLobby | R       | S    | -      | emitted when creating a lobby | |
-| lobbyStarted | S | R | - | received by the creator upon success | {lobbyId} |
+| lobbies | S | R | (R*) | update to available lobbies | [lobbyId] |
 | joinLobby | R | (S) | S | request to join a lobby (creator after reroute to player view) | |
 | lobbyJoined | S | (R) | R | successful lobby join emitted to all players in lobby (incl requesting player) | [players incl. vote status] |
 | voteStart | R | - | S | player votes to start the game | {vote status} |
