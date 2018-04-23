@@ -37,7 +37,8 @@ export default {
     },
     joinLobby(id, name) {
       console.log(id)
-      this.$router.push({name: 'lobby', params: { id }})
+      this.$socket.emit('joinLobby', {id})
+      //this.$router.push({name: 'lobby', params: { id }})
     },
     loadLobbies() {
       axios.get(`${global.HOST}/lobby`)
@@ -66,11 +67,8 @@ export default {
       } else if (data.add) {
         data.add.forEach(lobby => this.lobbies.push(lobby))
       } else if (data.remove) {
-        data.remove.map(r => r.id).forEach(r => {
-          const ix = this.lobbies.findIndex(l => r.id === l.id)
-          if (ix > -1) {
-            this.lobbies.slice(ix, ix)
-          }
+        data.remove.forEach(r => {
+          this.lobbies = this.lobbies.filter(l => r.id !== l.id)
         })
       }
     }

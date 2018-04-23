@@ -1,9 +1,10 @@
 const server = require('server')
 const ls = new (require('./lib/lobbystore'))()
-const { get, post, socket, error } = server.router
+const { socket, error } = server.router
 const { status, header } = server.reply
 const PORT = process.env.PORT || 3000
 const WAITINGROOM = -1 // lobbyId of waiting room
+let context
 const cors = [
   ctx => header('Access-Control-Allow-Origin', '*'),
   ctx => header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'),
@@ -14,14 +15,18 @@ ls.addLobby(WAITINGROOM) // waiting room lobby
 // clean lobbystore
 setInterval(() => {
   ls.lobbies.forEach(l => {
+    if ((new Date() - l.updated) / 1000 > 10 && l.id !== WAITINGROOM && l.players.length === 0) {
+      console.log('deleting old lobby', l.id)
+      context.io.emit('lobbies', {remove: [{id: l.id}]})
+      ls.removeLobby(l.id)
+    }
     l.players.forEach(p => {
-      if ((new Date() - p.updated) > 10) {
-        l.removePlayer(p.name)
+      if ((new Date() - p.updated) / 1000 > 10) {
+        console.log('deleting idle player', p.id)
+        ls.removePlayer(p.id)
+        context.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
       }
     })
-    if ((new Date() - l.updated) > 10) {
-      console.log('deleting old lobby', l.id)
-    }
   })
 }, 10000)
 // Launch server with options and a couple of routes
@@ -34,6 +39,7 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
   socket('disconnect', ctx => {
     console.log('client disconnected', ctx.socket.id)
     ls.removePlayer(ctx.socket.id)
+    ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
   }),
   socket('startLobby', ctx => {
     const id = ls.getFreeId()
@@ -50,18 +56,15 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
     })
   }),
   socket('joinLobby', ctx => {
-    const {id, playerId, name: playerName} = ctx.data
-    let l = ls.getLobby(id)
-    console.log(l)
-    if (!l) { // in case a non-existant lobby was opened via web link
-      console.log('creating lobby', l)
-      ls.addLobby(id)
-      l = ls.getLobby(id)
+    const {id: lobbyId} = ctx.data
+    const playerId = ctx.socket.id
+    if (!ls.getLobby(lobbyId)) { // in case a non-existant lobby was opened via web link
+      console.warn('someone is trying to join a non-existant lobby', {lobbyId, socket: ctx.socket.id})
+    } else {
+      ls.removePlayer(playerId)
+      ls.addPlayer(lobbyId, playerId, '')
+      ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
     }
-    l.addPlayer(ctx.socket.id, playerId, playerName)
-    const players = l.players
-    console.log(players)
-    l.players.map(p => p.socketId).forEach(s => ctx.io.sockets.sockets[s].emit('lobbyUpdate', players))
   }),
   socket('browseLobbies', ctx => {
     ctx.socket.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))})
@@ -71,4 +74,7 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
   ctx => status(404).send('<h1>These are not the dom elements you are looking for</h1>'),
   error(ctx => status(500).send(ctx.error.message))
 ])
+  .then(ctx => {
+    context = ctx
+  })
   .then(() => console.log(`Server started at http://localhost:${PORT}`))
