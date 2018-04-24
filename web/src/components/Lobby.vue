@@ -14,7 +14,6 @@
 
     <md-dialog :md-active.sync="timeout">
       <md-dialog-title>Your session timed out</md-dialog-title>
-
       <md-dialog-actions>
         <md-button class="md-primary" @click="onTimeoutConfirm">Meh</md-button>
       </md-dialog-actions>
@@ -22,6 +21,7 @@
     
     <span>name: {{ name }}</span><br>
     <span>id: {{ lobbyId }}</span>
+    <md-progress-bar md-mode="determinate" :md-value="progress"></md-progress-bar>
     <md-list>
 
       <md-divider class="md-inset"></md-divider>
@@ -29,9 +29,10 @@
       <md-list-item v-for="p in players" v-bind:key="p.name">
         <span class="md-list-item-text">{{ p.name }}</span>
 
-        <md-button class="md-icon-button md-list-action">
+        <md-button class="md-icon-button md-list-action md-primary" v-on:click="voteStart(p)" v-if="p.id === playerId">
           <md-icon class="md-primary">{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
         </md-button>
+        <md-icon class="" v-if="p.id !== playerId">{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
       </md-list-item>
     </md-list>
   </div>
@@ -52,7 +53,8 @@ export default {
       nameChosen: true,
       timeout: false,
       name: '',
-      playerId: this.$socket.id
+      playerId: this.$socket.id,
+      progress: 0
     }
   },
   methods: {
@@ -67,6 +69,11 @@ export default {
     },
     onTimeoutConfirm() {
       this.$router.push({name: 'start'})
+    },
+    voteStart(player) {
+      if (player.id === this.playerId) {
+        this.$socket.emit('voteStart', {lobbyId: this.lobbyId, status: !player.proceed})
+      }
     }
   },
   props: [],
@@ -76,6 +83,8 @@ export default {
     },
     players (data) {
       this.players = data
+      this.progress = data.filter(p => p.proceed).length / data.length * 100
+      // TODO: when 100% is reached start game
     },
     timeout (data) {
       console.log('TIMEOUT')

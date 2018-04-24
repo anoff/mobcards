@@ -59,9 +59,16 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
     ls.setPlayerName(playerId, ctx.data.name)
     ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.map(p => p.name).join(' ')}))}) // TODO: remove later
     const lobbyId = ls.playerToLobby.get(playerId)
-    ls.getLobby(lobbyId).players.map(p => ctx.io.sockets.sockets[p.id]).filter(s => s).forEach(socket => socket.emit('players', ls.getLobby(lobbyId).players))
+    if (lobbyId) {
+      ls.getLobby(lobbyId).players.map(p => ctx.io.sockets.sockets[p.id]).filter(s => s).forEach(socket => socket.emit('players', ls.getLobby(lobbyId).players))
+    }
   }),
   socket('voteStart', ctx => {
+    const {lobbyId, status} = ctx.data
+    const playerId = ctx.socket.id
+    console.log(playerId, lobbyId, status)
+    ls.playerProceed(playerId, status)
+    ls.getLobby(lobbyId).players.map(p => ctx.io.sockets.sockets[p.id]).filter(s => s).forEach(socket => socket.emit('players', ls.getLobby(lobbyId).players))
   }),
   ctx => status(404).send('<h1>These are not the dom elements you are looking for</h1>'),
   error(ctx => status(500).send(ctx.error.message))

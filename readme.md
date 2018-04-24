@@ -41,9 +41,8 @@ Below is a list of events and senders (S) / receivers (R)
 | startLobby | R       | S    | -      | emitted when creating a lobby | |
 | lobbies | S | R | (R*) | update to available lobbies | [lobbyId] |
 | joinLobby | R | (S) | S | request to join a lobby (creator after reroute to player view) | |
-| lobbyJoined | S | (R) | R | successful lobby join emitted to all players in lobby (incl requesting player) | [players incl. vote status] |
+| players | S | (R) | R | current players in a lobby, sent to all in a lobby | [players incl. vote status] |
 | voteStart | R | - | S | player votes to start the game | {vote status} |
-| startVoted | S | - | R | inform other players about vote change | [vote status] |
 
 Payloads updates of type `Array` are always in the form of:
 
