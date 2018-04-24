@@ -44,7 +44,7 @@ import uuidv4 from 'uuid/v4'
 export default {
   name: 'Lobby',
   mounted () {
-    
+    this.$socket.emit('joinLobby', {id: this.lobbyId})
   },
   data () {
     return {
@@ -77,7 +77,7 @@ export default {
     }
   },
   props: [],
-    sockets:{
+  sockets: {
     connect () {
       console.log('connected to chat server')
     },
@@ -89,6 +89,9 @@ export default {
     timeout (data) {
       console.log('TIMEOUT')
       this.timeout = true
+    },
+    lobbyNotFound () {
+      this.$router.push({name: 'start'})
     }
   }
 }
