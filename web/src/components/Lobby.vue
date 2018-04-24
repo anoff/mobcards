@@ -1,7 +1,7 @@
 <template>
   <div>
     <md-dialog-prompt
-      :md-active.sync="nameChosen"
+      :md-active.sync="promptName"
       v-model="name"
       md-title="Want to join the lobby?"
       md-input-maxlength="30"
@@ -26,13 +26,13 @@
 
       <md-divider class="md-inset"></md-divider>
 
-      <md-list-item v-for="p in players" v-bind:key="p.name">
+      <md-list-item v-for="p in players" v-bind:key="p.id">
         <span class="md-list-item-text">{{ p.name }}</span>
 
         <md-button class="md-icon-button md-list-action md-primary" v-on:click="voteStart(p)" v-if="p.id === playerId">
           <md-icon class="md-primary">{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
         </md-button>
-        <md-icon class="" v-if="p.id !== playerId">{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
+        <md-icon class="" v-else>{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
       </md-list-item>
     </md-list>
   </div>
@@ -50,7 +50,7 @@ export default {
     return {
       players: [ ],
       lobbyId: this.$route.params.id,
-      nameChosen: true,
+      promptName: false,
       timeout: false,
       name: '',
       playerId: this.$socket.id,
@@ -83,8 +83,13 @@ export default {
     },
     players (data) {
       this.players = data
+      // update progress
       this.progress = data.filter(p => p.proceed).length / data.length * 100
       // TODO: when 100% is reached start game
+      // check if name prompt is required for this user
+      const me = this.players.find(p => p.id === this.playerId)
+      console.log(me.id)
+      this.promptName = !me.name
     },
     timeout (data) {
       console.log('TIMEOUT')
