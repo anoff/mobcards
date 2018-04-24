@@ -74,7 +74,7 @@ export default {
     connect () {
       console.log('connected to chat server')
     },
-    lobbyUpdate (data) {
+    players (data) {
       this.players = data
     },
     timeout (data) {
