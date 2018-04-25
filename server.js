@@ -15,7 +15,6 @@ const cors = [
 ls.addLobby(WAITINGROOM) // waiting room lobby
 let context
 // clean lobbystore
-/*
 setInterval(() => {
   ls.lobbies.forEach(l => {
     if ((new Date() - l.updated) / 1000 > 10 && l.id !== WAITINGROOM && l.players.length === 0) {
@@ -33,7 +32,7 @@ setInterval(() => {
     })
   })
 }, 10000)
-*/
+
 // Launch server with options and a couple of routes
 server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
   socket('connect', ctx => {
@@ -57,6 +56,7 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
   socket('changeName', ctx => {
     const playerId = ctx.data.playerId
     ls.setPlayerName(playerId, ctx.data.name)
+    console.log(playerId, ctx.data.name)
     ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.map(p => p.name).join(' ')}))}) // TODO: remove later
     const lobbyId = ls.playerToLobby.get(playerId)
     if (lobbyId) {
