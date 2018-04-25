@@ -2,3 +2,4 @@
 *.tfstate*
 json-against-humanity/
 node_modules/
+dist/
