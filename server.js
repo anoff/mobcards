@@ -22,6 +22,7 @@ setInterval(() => {
       context.io.emit('lobbies', {remove: [{id: l.id}]})
       ls.removeLobby(l.id)
     }
+    /* TODO: check if this is really required if disconnect is handled correctly
     l.players.forEach(p => {
       if ((new Date() - p.updated) / 1000 > 10) {
         console.log('deleting idle player', p.id)
@@ -29,7 +30,7 @@ setInterval(() => {
         context.io.sockets.sockets[p.id].emit('timeout', '')
         context.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
       }
-    })
+    }) */
   })
 }, 10000)
 
@@ -48,9 +49,12 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
     }
   }),
   socket('disconnect', ctx => {
+    const playerId = ctx.socket.id
     console.log('client disconnected', ctx.socket.id)
+    const lobbyId = ls.playerToLobby(playerId)
     ls.removePlayer(ctx.socket.id)
     ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
+    ls.getLobby(lobbyId).players.map(p => ctx.io.sockets.sockets[p.id]).filter(s => s).forEach(socket => socket.emit('players', ls.getLobby(lobbyId).players))
   }),
   // in a lobby
   socket('changeName', ctx => {
