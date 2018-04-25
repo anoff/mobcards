@@ -4,8 +4,13 @@ node_js:
   - '8'
   - '6'
 
-deploy:
-  provider: azure_web_apps
-  # username: azure_deployment_user       # If AZURE_WA_USERNAME isn't set
-  # password: azure_deployment_password   # If AZURE_WA_PASSWORD isn't set
-  site: smartcards0host       # If AZURE_WA_SITE isn't set
+jobs:
+  include:
+    - stage: deploy webapp
+      node_js: "6"
+      script: echo "Deploying to azure ..."
+      deploy:
+        provider: azure_web_apps
+        # username: azure_deployment_user       # If AZURE_WA_USERNAME isn't set
+        # password: azure_deployment_password   # If AZURE_WA_PASSWORD isn't set
+        site: smartcards0host       # If AZURE_WA_SITE isn't set
