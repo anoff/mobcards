@@ -6,8 +6,9 @@
   "scripts": {
     "test": "standard",
     "dev-server": "PORT=3000 nodemon -i web/ ./server.js",
-    "dev-client": "PORT=8080 /webpack-dev-server --inline --progress --config web/build/webpack.dev.conf.js",
-    "build": "node web/build/build.js"
+    "dev-client": "PORT=8080 webpack-dev-server --inline --progress --config web/build/webpack.dev.conf.js",
+    "build": "node web/build/build.js",
+    "start": "node server"
   },
   "engines": {
     "node": ">= 7.6.0",

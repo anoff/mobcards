@@ -8,7 +8,7 @@ import 'vue-material/dist/vue-material.css'
 import 'vue-material/dist/theme/black-green-light.css'
 import VueSocketIO from 'vue-socket.io'
 
-Vue.use(VueSocketIO, window.location)
+Vue.use(VueSocketIO, process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : window.location.origin)
 Vue.use(VueMaterial)
 Vue.config.productionTip = false
 
