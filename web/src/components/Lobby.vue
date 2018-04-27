@@ -49,6 +49,7 @@ import uuidv4 from 'uuid/v4'
 export default {
   name: 'Lobby',
   mounted () {
+    console.log('trying to join lobby', this.lobbyId)
     this.$socket.emit('joinLobby', {id: this.lobbyId})
   },
   data () {

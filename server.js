@@ -65,7 +65,7 @@ server({ port: PORT, public: './web/dist' }, [
   }),
   ctx => status(404).send('<h1>These are not the dom elements you are looking for</h1>'),
   error(ctx => status(500).send(ctx.error.message))
-], sockets)
+])
   .then(ctx => {
     context = ctx
   })
