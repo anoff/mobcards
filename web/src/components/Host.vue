@@ -6,11 +6,11 @@
 
     <md-list>
       <md-subheader>Lobbies</md-subheader>
-      <md-list-item v-for="l in lobbies" v-bind:key="l.id">
+      <md-list-item v-for="l in lobbies" v-bind:key="l.id" v-if="!l.started">
         <md-button class="md-icon-button md-list-action" v-on:click="joinLobby(l.id, name)">
           <md-icon>play_circle_outline</md-icon>
         </md-button>
-        <span class="md-list-item-text">{{ l.id }} ({{ l.count }})</span>
+        <span class="md-list-item-text">{{ l.id }} ({{ l.count }}) started: {{ l.started }} </span>
       </md-list-item>
     </md-list>
   </div>

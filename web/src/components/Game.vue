@@ -42,7 +42,8 @@ export default {
 .md-card {
   border-radius: 2em;
   background-color: black;
-  width: 320px;
+  max-width: 320px;
+  width: 100%;
   height: 240px;
   margin: 4px;
   display: inline-block;
@@ -50,6 +51,6 @@ export default {
 }
 .md-card-content {
   color: white;
-  font-size: 1.8em;
+  font-size: 2em;
 }
 </style>

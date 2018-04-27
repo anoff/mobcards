@@ -3,7 +3,7 @@ const server = require('server')
 const { socket, error } = server.router
 const { status } = server.reply
 const ls = new (require('./lib/lobbystore'))()
-const sockets = require('./lib/sockets').load(socket, ls)
+const sockets = require('./lib/sockets')
 const PORT = process.env.PORT || 80
 const WAITINGROOM = global.WAITINGROOM // lobbyId of waiting room
 
@@ -30,7 +30,7 @@ setInterval(() => {
 }, 10000)
 
 // Launch server with options and a couple of routes
-console.log(process.env.NODE_ENV)
+sockets.load(socket, ls) // load socket definitions
 server({ port: PORT, public: './web/dist' }, [
   socket('connect', ctx => {
     console.log('client connected', ctx.socket.id)
@@ -42,15 +42,15 @@ server({ port: PORT, public: './web/dist' }, [
     console.log('client disconnected', ctx.socket.id)
     const lobbyId = ls.playerToLobby.get(playerId)
     ls.removePlayer(ctx.socket.id)
-    ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
+    ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => l.getStatus())}) // TODO: remove if count is not needed anymore
     ls.getLobby(lobbyId).players.map(p => ctx.io.sockets.sockets[p.id]).filter(s => s).forEach(socket => socket.emit('players', ls.getLobby(lobbyId).players))
   }),
   // in a lobby
   socket('changeName', ctx => {
-    const playerId = ctx.data.playerId
+    const playerId = ctx.socket.id
     ls.setPlayerName(playerId, ctx.data.name)
     console.log(playerId, ctx.data.name)
-    ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.map(p => p.name).join(' ')}))}) // TODO: remove later
+    ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => l.getStatus())}) // TODO: remove later
     const lobbyId = ls.playerToLobby.get(playerId)
     if (lobbyId) {
       ls.getLobby(lobbyId).players.map(p => ctx.io.sockets.sockets[p.id]).filter(s => s).forEach(socket => socket.emit('players', ls.getLobby(lobbyId).players))
@@ -62,6 +62,10 @@ server({ port: PORT, public: './web/dist' }, [
     console.log(playerId, lobbyId, status)
     ls.playerProceed(playerId, status)
     ls.getLobby(lobbyId).players.map(p => ctx.io.sockets.sockets[p.id]).filter(s => s).forEach(socket => socket.emit('players', ls.getLobby(lobbyId).players))
+  }),
+  socket('startGame', ctx => {
+    const {lobbyId} = ctx.data
+    ls.startGame(lobbyId)
   }),
   ctx => status(404).send('<h1>These are not the dom elements you are looking for</h1>'),
   error(ctx => status(500).send(ctx.error.message))

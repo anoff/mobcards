@@ -24,7 +24,7 @@
       <md-content class="md-primary">{{ timeRemaining }}</md-content>
     </md-dialog>
 
-    <span>name: {{ name }}</span><br>
+    <span v-on:dblclick="promptName = true">name: {{ name }}</span><br>
     <span>id: {{ lobbyId }}</span>
     <md-progress-bar md-mode="determinate" :md-value="progress"></md-progress-bar>
     <md-list>
@@ -58,8 +58,8 @@ export default {
       lobbyId: this.$route.params.id,
       promptName: false,
       timeout: false,
-      name: '',
-      playerId: null,
+      name: localStorage.getItem('smartcards-name'),
+      playerId: this.$socket.id,
       progress: 0,
       timeRemaining: 5
     }
@@ -67,6 +67,8 @@ export default {
   methods: {
     nameConfirm () {
       this.$socket.emit('changeName', { playerId: this.playerId, name: this.name })
+      localStorage.setItem('smartcards-name', this.name) // store so next session will instantiante with previous name
+      sessionStorage.setItem('smartcard-name', this.name) // keep for active session so no more name popups occur
     },
     onVote (proceed) {
       console.log(this.players)
@@ -91,6 +93,7 @@ export default {
       }
     },
     startGame() {
+      this.$socket.emit('startGame', {id: this.lobbyId})
       this.$router.push({name: 'game', params: { id: this.lobbyId }})
     }
   },
@@ -109,11 +112,15 @@ export default {
       }
       // check if name prompt is required for this user
       const me = this.players.find(p => p.id === this.playerId)
-      console.log(this.playerId)
-      if (!me) console.log(JSON.stringify(data))
-      console.log(me.name)
-      
-      this.promptName = !me.name
+      if (!me.name) {
+        console.log(sessionStorage.getItem('smartcard-name'))
+        if (sessionStorage.getItem('smartcard-name')) {
+          this.name = sessionStorage.getItem('smartcard-name')
+          this.$socket.emit('changeName', { name: this.name })
+        } else {
+          this.promptName = true
+        }
+      }
     },
     timeout (data) {
       console.log('TIMEOUT')
