@@ -41,13 +41,6 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
     const playerId = ctx.socket.id
     ls.addPlayer(WAITINGROOM, playerId, 'unknown')
   }),
-  // assert player into WAITINGROOM
-  socket('hello', ctx => {
-    const player = ls.getLobby(WAITINGROOM).players.find(p => p.id === ctx.socket.id)
-    if (!player) {
-      ls.addPlayer(WAITINGROOM, ctx.socket.id, 'unknown')
-    }
-  }),
   socket('disconnect', ctx => {
     const playerId = ctx.socket.id
     console.log('client disconnected', ctx.socket.id)
