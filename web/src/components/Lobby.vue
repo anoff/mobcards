@@ -83,12 +83,14 @@ export default {
     },
     countdown() {
       if (this.timeRemaining === 0) {
-        this.$router.push({name: 'cards', params: { id: this.lobbyId }})
+        startGame()
       } else {
         this.timeRemaining--
         setTimeout(this.countdown.bind(this), 1000)
       }
-
+    },
+    startGame() {
+      this.$router.push({name: 'game', params: { id: this.lobbyId }})
     }
   },
   props: [],

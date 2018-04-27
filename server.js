@@ -1,16 +1,11 @@
 global.WAITINGROOM = -1
 const server = require('server')
 const { socket, error } = server.router
-const { status, header } = server.reply
+const { status } = server.reply
 const ls = new (require('./lib/lobbystore'))()
-const sockets = require('./lib/sockets')(socket, ls)
+const sockets = require('./lib/sockets').load(socket, ls)
 const PORT = process.env.PORT || 80
 const WAITINGROOM = global.WAITINGROOM // lobbyId of waiting room
-const cors = [
-  ctx => header('Access-Control-Allow-Origin', '*'),
-  ctx => header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'),
-  ctx => ctx.method.toLowerCase() === 'options' ? 200 : false
-]
 
 ls.addLobby(WAITINGROOM) // waiting room lobby
 let context
@@ -35,7 +30,8 @@ setInterval(() => {
 }, 10000)
 
 // Launch server with options and a couple of routes
-server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
+console.log(process.env.NODE_ENV)
+server({ port: PORT, public: './web/dist' }, [
   socket('connect', ctx => {
     console.log('client connected', ctx.socket.id)
     const playerId = ctx.socket.id
@@ -44,7 +40,7 @@ server({ port: PORT, public: './web/dist', security: { csrf: false } }, cors, [
   socket('disconnect', ctx => {
     const playerId = ctx.socket.id
     console.log('client disconnected', ctx.socket.id)
-    const lobbyId = ls.playerToLobby(playerId)
+    const lobbyId = ls.playerToLobby.get(playerId)
     ls.removePlayer(ctx.socket.id)
     ctx.io.emit('lobbies', {status: ls.lobbies.filter(l => l.id !== WAITINGROOM).map(l => ({id: l.id, count: l.players.length}))}) // TODO: remove if count is not needed anymore
     ls.getLobby(lobbyId).players.map(p => ctx.io.sockets.sockets[p.id]).filter(s => s).forEach(socket => socket.emit('players', ls.getLobby(lobbyId).players))

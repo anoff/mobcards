@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: 'Cards',
+  name: 'Game',
   data: () => ({
     cards: [{id: 0, text: 'funny'},
     {id: 1, text: 'funnier'},
