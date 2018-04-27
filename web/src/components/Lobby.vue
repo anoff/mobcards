@@ -58,7 +58,7 @@ export default {
       promptName: false,
       timeout: false,
       name: '',
-      playerId: this.$socket.id,
+      playerId: null,
       progress: 0,
       timeRemaining: 5
     }
@@ -83,7 +83,7 @@ export default {
     },
     countdown() {
       if (this.timeRemaining === 0) {
-        startGame()
+        this.startGame()
       } else {
         this.timeRemaining--
         setTimeout(this.countdown.bind(this), 1000)
@@ -97,6 +97,7 @@ export default {
   sockets: {
     connect () {
       console.log('connected to chat server')
+      this.playerId = this.$socket.id
     },
     players (data) {
       this.players = data
@@ -107,6 +108,8 @@ export default {
       }
       // check if name prompt is required for this user
       const me = this.players.find(p => p.id === this.playerId)
+      console.log(this.playerId)
+      if (!me) console.log(JSON.stringify(data))
       console.log(me.name)
       
       this.promptName = !me.name
