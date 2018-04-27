@@ -3,8 +3,9 @@
   <vue-swing
     @throwout="throwout"
     @throwin="throwin"
+    ref="wrapper"
   >
-    <md-card v-for="card in cards" v-bind:key="card.id" v-if="visibleCards.indexOf(card.id) > -1">
+    <md-card v-for="card in cards" v-bind:key="card.id" v-bind:style="{'z-index': card.id}">
       <md-card-media-actions md-solid>
           <md-card-area>
             <md-card-content>
@@ -36,21 +37,23 @@ export default {
     {id: 2, text: 'LOL'}],
     question: "a clown with a red nose is _",
     selected: null,
-    visibleCards: [0, 1]
+    throwCount: 0
   }),
   methods: {
     parseText: (q, a) => q.replace('_', `<u><b>${a}</b></u>`),
     throwout (data) {
-      this.visibleCards[0]++
-      this.visibleCards[1]++
-
-      if (this.visibleCards[0] > 2) {
-        this.visibleCards[0] = 0
+      this.throwCount++
+      if(this.throwCount >= this.cards.length) {
+        const cards = this.$refs.wrapper.cards
+        let delay = 10
+        cards.forEach(c => {
+          const x = Math.floor(Math.random() * 800) - 400
+          const y = Math.floor(Math.random() * 400) - 200
+          setTimeout(() => c.throwIn(x, y), delay += 10)
+          console.log(c.target, delay)
+        })
+        this.throwCount = 0
       }
-      if (this.visibleCards[1] > 2) {
-        this.visibleCards[1] = 0
-      }
-      console.log(this.visibleCards, data)
     },
     throwin (data) {
       console.log(data, 'in')
