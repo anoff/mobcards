@@ -4,8 +4,9 @@
     @throwout="throwout"
     @throwin="throwin"
     ref="wrapper"
+    :config="swingConfig"
   >
-    <md-card v-for="card in cards" v-bind:key="card.id" v-bind:style="{'z-index': card.id}">
+    <md-card v-for="card in cards" v-bind:key="card.id" v-bind:style="{'z-index': card.id, 'margin-left': card.id*5 + 'px', 'margin-top': card.id*5 + 'px' }">
       <md-card-media-actions md-solid>
           <md-card-area>
             <md-card-content>
@@ -37,7 +38,15 @@ export default {
     {id: 2, text: 'LOL'}],
     question: "a clown with a red nose is _",
     selected: null,
-    throwCount: 0
+    throwCount: 0,
+    swingConfig: {
+      minThrowOutDistance: 400,
+      maxThrowOutDistance: 600,
+      throwOutConfidence (x, y) {
+        const dist2 = x*x + y*y
+        return Math.min(1, dist2/6000)
+      }
+    }
   }),
   methods: {
     parseText: (q, a) => q.replace('_', `<u><b>${a}</b></u>`),
@@ -50,13 +59,12 @@ export default {
           const x = Math.floor(Math.random() * 800) - 400
           const y = Math.floor(Math.random() * 400) - 200
           setTimeout(() => c.throwIn(x, y), delay += 10)
-          console.log(c.target, delay)
         })
         this.throwCount = 0
       }
     },
     throwin (data) {
-      console.log(data, 'in')
+      // console.log(data, 'in')
     }
   }
 }
@@ -65,6 +73,9 @@ export default {
 <style scoped>
 .md-card {
   border-radius: 2em;
+  border-color: #f5f5f5;
+  border-width: 2px;
+  border-style: solid;
   background-color: black;
   max-width: 320px;
   width: 100%;
