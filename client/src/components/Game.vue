@@ -7,7 +7,7 @@
       ref="wrapper"
       :config="swingConfig"
     >
-      <v-card v-for="card in cards" v-bind:key="card.id" v-bind:style="{'z-index': card.id, 'margin-left': card.id*5 + 'px', 'margin-top': card.id*5 + 'px' }">
+      <v-card v-for="card in cards" v-bind:key="card.id" v-bind:style="{'z-index': card.id, 'margin-left': card.id*5 + 'px', 'margin-top': card.id*5 + 'px' }" :data-id="card.id">
         <v-card-title md-solid>
           <span class="card-text" v-html="parseText(question, card.text)"></span>
         </v-card-title>
@@ -37,7 +37,7 @@ export default {
     {id: 4, text: 'sad'}],
     question: "a clown with a red nose is _",
     selected: null,
-    throwCount: 0,
+    thrownOut: [], // keep track of cards that have been removed from the pile
     swingConfig: {
       minThrowOutDistance: 400,
       maxThrowOutDistance: 600,
@@ -50,20 +50,22 @@ export default {
   methods: {
     parseText: (q, a) => q.replace('_', `<u><b>${a}</b></u>`),
     throwout (data) {
-      this.throwCount++
-      if(this.throwCount >= this.cards.length) {
+      const id = parseInt(data.target.getAttribute('data-id'))
+      this.cards.find(c => c.id === id).thrown = true      
+
+      if (this.cards.filter(c => !c.thrown).length === 0) {
         const cards = this.$refs.wrapper.cards
-        let delay = 10
+        let delay = 50
         cards.forEach(c => {
           const x = Math.floor(Math.random() * 800) - 400
           const y = Math.floor(Math.random() * 400) - 200
-          setTimeout(() => c.throwIn(x, y), delay += 10)
+          setTimeout(() => c.throwIn(x, y), delay += 50)
         })
-        this.throwCount = 0
       }
     },
     throwin (data) {
-      
+      const id = parseInt(data.target.getAttribute('data-id'))
+      this.cards.find(c => c.id === id).thrown = false
     }
   }
 }
