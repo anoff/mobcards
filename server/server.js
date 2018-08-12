@@ -1,12 +1,17 @@
 global.WAITINGROOM = -1
 const server = require('server')
 const { socket, error } = server.router
-const { status } = server.reply
+const { status, header } = server.reply
 const ls = new (require('./lib/lobbystore'))()
 const sockets = require('./lib/sockets')
 const PORT = process.env.PORT || 80
 const WAITINGROOM = global.WAITINGROOM // lobbyId of waiting room
 
+const cors = [
+  ctx => header('Access-Control-Allow-Origin', '*'),
+  ctx => header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'),
+  ctx => ctx.method.toLowerCase() === 'options' ? 200 : false
+]
 ls.addLobby(WAITINGROOM) // waiting room lobby
 let context
 // clean lobbystore
@@ -32,6 +37,7 @@ setInterval(() => {
 // Launch server with options and a couple of routes
 sockets.load(socket, ls) // load socket definitions
 server({ port: PORT, public: './web/dist' }, [
+  cors,
   socket('connect', ctx => {
     console.log('client connected', ctx.socket.id)
     const playerId = ctx.socket.id

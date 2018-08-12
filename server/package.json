@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "standard",
-    "dev": "PORT=3000 nodemon -i web/ ./server.js",
+    "dev": "PORT=3000 nodemon ./server.js",
     "start": "node server"
   },
   "engines": {
@@ -28,7 +28,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "server": "^1.0.18",
-    "socket.io": "^2.1.0",
+    "socket.io": "^2.1.1",
     "uuid": "^3.2.1"
   }
 }
