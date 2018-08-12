@@ -1,0 +1,34 @@
+{
+  "name": "mobcards",
+  "version": "0.0.1",
+  "description": "quick game of cards against humanity on your mobile",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard",
+    "dev": "PORT=3000 nodemon -i web/ ./server.js",
+    "start": "node server"
+  },
+  "engines": {
+    "node": ">= 7.6.0",
+    "npm": ">= 3.0.0"
+  },
+  "keywords": [
+    "cards",
+    "against",
+    "humanity",
+    "nodejs",
+    "webapp"
+  ],
+  "author": "Andreas Offenhaeuser <https://anoff.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.17.3",
+    "standard": "^11.0.1"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "server": "^1.0.18",
+    "socket.io": "^2.1.0",
+    "uuid": "^3.2.1"
+  }
+}

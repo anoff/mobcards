@@ -1,41 +1,29 @@
 {
   "name": "mobcards",
-  "version": "0.0.1",
-  "description": "quick game of cards against humanity from your mobile",
-  "main": "index.js",
+  "version": "0.1.0",
+  "author": "anoff <offenhaeuser@gmail.com>",
+  "private": true,
   "scripts": {
-    "test": "standard",
-    "dev-server": "PORT=3000 nodemon -i web/ ./server.js",
-    "dev-client": "PORT=8080 webpack-dev-server --inline --progress --config web/build/webpack.dev.conf.js",
-    "build": "node web/build/build.js",
-    "start": "node server"
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "start": "npm run dev",
+    "lint": "eslint --ext .js,.vue src",
+    "build": "node build/build.js"
   },
-  "engines": {
-    "node": ">= 7.6.0",
-    "npm": ">= 3.0.0"
+  "dependencies": {
+    "axios": "^0.18.0",
+    "swing": "^3.1.1",
+    "vue": "^2.5.2",
+    "vue-material": "^1.0.0-beta-10.2",
+    "vue-router": "^3.0.1",
+    "vue-socket-io": "^0.3.2",
+    "vue-socket.io": "^2.1.1-b",
+    "vue-swing": "0.0.9",
+    "vuetify": "^1.1.10"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anoff/smartcards.git"
-  },
-  "keywords": [
-    "cards",
-    "against",
-    "humanity",
-    "nodejs",
-    "webapp"
-  ],
-  "author": "Andreas Offenhaeuser <https://anoff.io>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/anoff/smartcards/issues"
-  },
-  "homepage": "https://github.com/anoff/smartcards#readme",
   "devDependencies": {
-    "nodemon": "^1.17.3",
-    "standard": "^11.0.1",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
+    "babel-eslint": "^8.2.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.1",
     "babel-plugin-syntax-jsx": "^6.18.0",
@@ -46,6 +34,15 @@
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
+    "eslint": "^4.15.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-vue": "^4.0.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
@@ -70,17 +67,13 @@
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "server": "^1.0.18",
-    "socket.io": "^2.1.0",
-    "socket.io-client": "^2.1.0",
-    "swing": "^3.1.1",
-    "uuid": "^3.2.1",
-    "vue": "^2.5.2",
-    "vue-material": "^1.0.0-beta-7",
-    "vue-router": "^3.0.1",
-    "vue-socket.io": "^2.1.1-b",
-    "vue-swing": "0.0.9"
-  }
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

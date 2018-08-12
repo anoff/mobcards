@@ -2,7 +2,7 @@
 // parse into custom format
 const fs = require('fs')
 const SOURCE = './json-against-humanity/full.md.json'
-const TARGET = './cards.json'
+const TARGET = './server/cards.json'
 
 const cardsRaw = require(SOURCE)
 
