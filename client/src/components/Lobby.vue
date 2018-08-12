@@ -1,45 +1,68 @@
 <template>
   <div>
-    <md-dialog-prompt
-      :md-active.sync="promptName"
-      v-model="name"
-      md-title="Want to join the lobby?"
-      md-input-maxlength="30"
-      md-input-placeholder="Type your name..."
-      md-autofocus
-      md-cancel-text="Exit"
-      @md-cancel="nameCancel"
-      md-confirm-text="Join"
-      @md-confirm="nameConfirm" />
+    <v-dialog
+      v-model="promptName"
+      persistent
+    >
+      <v-card>
+        <v-card-title class="headline">Want to join the lobby?</v-card-title>
+        <v-text-field
+          v-model="name"
+          label="Name"
+          required
+        ></v-text-field>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" flat @click.native="nameCancel()">Cancel</v-btn>
+          <v-btn color="green darken-1" flat @click.native="nameConfirm()">Join</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-    <md-dialog :md-active.sync="timeout">
-      <md-dialog-title>Your session timed out</md-dialog-title>
-      <md-dialog-actions>
-        <md-button class="md-primary" @click="onTimeoutConfirm">Meh</md-button>
-      </md-dialog-actions>
-    </md-dialog>
+    <v-dialog v-model="timeout">
+      <v-card>
+        <v-card-title class="headline">Your session timed out</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click.native="onTimeoutConfirm()">Meh</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     
-    <md-dialog :md-active.sync="progress > 99.9">
-      <md-dialog-title>Starting game..</md-dialog-title>
-      <md-content class="md-primary">{{ timeRemaining }}</md-content>
-    </md-dialog>
+    <v-dialog v-model="isStarting">
+      <v-card>
+        <v-card-title class="headline">Starting game..</v-card-title>
+        <div>
+          {{ timeRemaining }}
+        </div>
+      </v-card>
+    </v-dialog>
 
+    <v-list
+      subheader
+    >
+    <v-subheader>Players in Lobby</v-subheader>
     <span v-on:dblclick="promptName = true">name: {{ name }}</span><br>
     <span>id: {{ lobbyId }}</span>
-    <md-progress-bar md-mode="determinate" :md-value="progress"></md-progress-bar>
-    <md-list>
-
-      <md-divider class="md-inset"></md-divider>
-
-      <md-list-item v-for="p in players" v-bind:key="p.id">
-        <span class="md-list-item-text">{{ p.name }}</span>
-
-        <md-button class="md-icon-button md-list-action md-primary" v-on:click="voteStart(p)" v-if="p.id === playerId">
-          <md-icon class="md-primary">{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
-        </md-button>
-        <md-icon class="" v-else>{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
-      </md-list-item>
-    </md-list>
+      <v-list-tile
+      v-for="p in players"
+      :key="p.id"
+      >
+        <v-list-tile-action>
+          <v-btn
+            @click="voteStart(p)"
+            icon
+            v-if="p.id === playerId"
+          >
+            <v-icon>{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</v-icon>
+          </v-btn>
+          <v-icon v-else>{{ p.proceed ? 'check_box' : 'check_box_outline_blank'}}</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ p.name }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
   </div>
 </template>
 
@@ -51,6 +74,11 @@ export default {
   mounted () {
     console.log('trying to join lobby', this.lobbyId)
     this.$socket.emit('joinLobby', {id: this.lobbyId})
+  },
+  computed: {
+    isStarting () {
+      return this.progress > 99
+    }
   },
   data () {
     return {

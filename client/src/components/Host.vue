@@ -7,7 +7,7 @@
       bottom
       right
       fab
-      :click="createLobby()"
+      @click="createLobby()"
     >
       <v-icon>add</v-icon>
     </v-btn>
@@ -23,7 +23,7 @@
       >
         <v-list-tile-action>
           <v-btn
-            :click="joinLobby(l.id, name)"
+            @click="joinLobby(l.id, name)"
             icon
           >
           <v-icon>play_circle_outline</v-icon></v-btn>
@@ -45,11 +45,7 @@ export default {
     active: false,
     name: null,
     ids: [],
-    lobbies: [{
-      id: '23',
-      count: 2,
-      started: false
-    }]
+    lobbies: []
   }),
   mounted: function () {
     this.$socket.emit('browseLobbies', '')
@@ -57,10 +53,11 @@ export default {
   methods: {
     createLobby() {
       // get lobby ID
+      console.log('CREATING')
       this.$socket.emit('startLobby', null)
     },
     joinLobby(id, name) {
-      console.log(id)
+      console.log('JOINING', id)
       this.$socket.emit('joinLobby', {id})
     }
   },

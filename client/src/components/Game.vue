@@ -1,32 +1,29 @@
 <template>
-  <div class="card-container">
-  <vue-swing
-    @throwout="throwout"
-    @throwin="throwin"
-    ref="wrapper"
-    :config="swingConfig"
-  >
-    <md-card v-for="card in cards" v-bind:key="card.id" v-bind:style="{'z-index': card.id, 'margin-left': card.id*5 + 'px', 'margin-top': card.id*5 + 'px' }">
-      <md-card-media-actions md-solid>
-          <md-card-area>
-            <md-card-content>
-              <span v-html="parseText(question, card.text)"></span>
-            </md-card-content>
-          </md-card-area>
+  <v-container>
+    <div class="card-container">
+    <vue-swing
+      @throwout="throwout"
+      @throwin="throwin"
+      ref="wrapper"
+      :config="swingConfig"
+    >
+      <v-card v-for="card in cards" v-bind:key="card.id" v-bind:style="{'z-index': card.id, 'margin-left': card.id*5 + 'px', 'margin-top': card.id*5 + 'px' }">
+        <v-card-title md-solid>
+          <span class="card-text" v-html="parseText(question, card.text)"></span>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn icon class="primary" @click="selected = card.id" v-bind:class="{ 'accent': selected == card.id }">
+            <v-icon>favorite</v-icon>
+          </v-btn>
 
-        <md-card-actions>
-          <md-button class="md-icon-button md-raised md-primary" @click="selected = card.id" v-bind:class="{ 'md-accent': selected == card.id }">
-            <md-icon>favorite</md-icon>
-          </md-button>
-
-          <md-button class="md-icon-button md-raised">
-            <md-icon>share</md-icon>
-          </md-button>
-        </md-card-actions>
-      </md-card-media-actions>
-    </md-card>
-  </vue-swing>
-  </div>
+          <v-btn icon class="secondary">
+            <v-icon>share</v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </vue-swing>
+    </div>
+  </v-container>
 </template>
 
 <script>
@@ -66,14 +63,14 @@ export default {
       }
     },
     throwin (data) {
-      this.throwCount--
+      
     }
   }
 }
 </script>
 
 <style scoped>
-.md-card {
+.v-card {
   border-radius: 2em;
   border-color: #f5f5f5;
   border-width: 2px;
@@ -89,11 +86,12 @@ export default {
   left: 0;
   position: absolute;
 }
-.md-card-content {
+.card-text {
   color: white;
   font-size: 2em;
 }
 .card-container {
   position: relative;
+  margin-top: 8em;
 }
 </style>
