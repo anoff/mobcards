@@ -3,14 +3,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.css'
-import 'vue-material/dist/theme/black-green-light.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import 'vuetify/dist/vuetify.min.css'
+import Vuetify from 'vuetify'
 import VueSocketIO from 'vue-socket.io'
 import VueSwing from 'vue-swing'
 
-Vue.use(VueSocketIO, process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : window.location.origin)
-Vue.use(VueMaterial)
+const socketLocation = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : window.location.origin
+
+Vue.use(Vuetify)
+Vue.use(VueSocketIO, socketLocation)
 Vue.component('vue-swing', VueSwing)
 Vue.config.productionTip = false
 

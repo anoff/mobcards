@@ -1,19 +1,39 @@
 <template>
-  <div>
-    <md-button class="md-fab md-primary" v-on:click="createLobby()">
-      <md-icon>add</md-icon>
-    </md-button>
+  <v-content>
+    <v-btn
+      color="primary"
+      dark
+      absolute
+      bottom
+      right
+      fab
+      :click="createLobby()"
+    >
+      <v-icon>add</v-icon>
+    </v-btn>
 
-    <md-list>
-      <md-subheader>Lobbies</md-subheader>
-      <md-list-item v-for="l in lobbies" v-bind:key="l.id" v-if="!l.started">
-        <md-button class="md-icon-button md-list-action" v-on:click="joinLobby(l.id, name)">
-          <md-icon>play_circle_outline</md-icon>
-        </md-button>
-        <span class="md-list-item-text">{{ l.id }} ({{ l.count }}) started: {{ l.started }} </span>
-      </md-list-item>
-    </md-list>
-  </div>
+    <v-list
+      subheader
+      three-line
+    >
+      <v-subheader>Active Lobbies</v-subheader>
+      <v-list-tile
+      v-for="l in lobbies"
+      :key="l.id"
+      >
+        <v-list-tile-action>
+          <v-btn
+            :click="joinLobby(l.id, name)"
+            icon
+          >
+          <v-icon>play_circle_outline</v-icon></v-btn>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ l.id }} ({{ l.count }}) started: {{ l.started }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
+  </v-content>
 </template>
 
 <script>
@@ -25,7 +45,11 @@ export default {
     active: false,
     name: null,
     ids: [],
-    lobbies: []
+    lobbies: [{
+      id: '23',
+      count: 2,
+      started: false
+    }]
   }),
   mounted: function () {
     this.$socket.emit('browseLobbies', '')

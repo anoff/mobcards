@@ -1,73 +1,67 @@
 <template>
-  <div class="page-container">
-    <md-app md-mode="reveal">
-      <md-app-toolbar class="md-primary">
-        <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
-          <md-icon>menu</md-icon>
-        </md-button>
-        <span class="md-title">Smartcards</span>
-      </md-app-toolbar>
-
-      <md-app-drawer :md-active.sync="menuVisible">
-        <md-toolbar class="md-transparent" md-elevation="0">
-          <span>Choose wisely</span>
-
-          <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button md-dense" @click="menuVisible = !menuVisible">
-              <md-icon>keyboard_arrow_left</md-icon>
-            </md-button>
-          </div>
-        </md-toolbar>
-
-        <md-list>
-          <md-button v-bind:href="'#/stats'" v-on:click="menuVisible = !menuVisible">
-            <md-list-item>
-              <md-icon>insert_chart</md-icon>
-              <span class="md-list-item-text">Stats</span>
-            </md-list-item>
-          </md-button>
-
-          <md-button v-bind:href="'#/'" v-on:click="menuVisible = !menuVisible">
-            <md-list-item>
-              <md-icon>exit_to_app</md-icon>
-              <span class="md-list-item-text">Leave game</span>
-            </md-list-item>
-          </md-button>
-
-          <md-button v-bind:href="'#/cards'" v-on:click="menuVisible = !menuVisible">
-            <md-list-item>
-              <md-icon>info</md-icon>
-              <span class="md-list-item-text">Help</span>
-            </md-list-item>
-          </md-button>
-
-        </md-list>
-      </md-app-drawer>
-
-      <md-app-content>
-        <router-view/>
-      </md-app-content>
-    </md-app>
-  </div>
+  <v-app>
+    <v-navigation-drawer
+    v-model="menuVisible"
+    temporary
+    app
+    >
+      <v-list class="pt-0" dense>
+        <v-list-tile
+        v-for="item in menuItems"
+        :key="item.title"
+        :href="item.link"
+        >
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar
+    fixed
+    app
+    >
+      <v-toolbar-side-icon
+      @click="menuVisible = !menuVisible"
+      >
+        <v-icon>menu</v-icon>
+      </v-toolbar-side-icon>
+      <v-toolbar-title>mobcards</v-toolbar-title>
+    </v-toolbar>
+    
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <style lang="css" scoped>
-.md-app {
-  border: 1px solid rgba(#000, .12);
-  min-height: 500px;
-}
 
-.md-drawer {
-  width: 230px;
-  max-width: calc(100vw - 125px);
-}
 </style>
 
 <script>
 export default {
   name: 'App',
   data: () => ({
-    menuVisible: false
+    menuVisible: false,
+    menuItems: [
+      {
+        icon: 'insert_chart',
+        title: 'Stats',
+        link: 'stats'
+      },
+      {
+        icon: 'exit_to_app',
+        title: 'Leave game',
+        link: '/'
+      },
+      {
+        icon: 'info',
+        title: 'Help',
+        link: 'cards'
+      }
+    ]
   })
 }
 </script>
