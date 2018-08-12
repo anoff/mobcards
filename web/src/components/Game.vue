@@ -35,7 +35,9 @@ export default {
   data: () => ({
     cards: [{id: 0, text: 'funny'},
     {id: 1, text: 'funnier'},
-    {id: 2, text: 'LOL'}],
+    {id: 2, text: 'LOL'},
+    {id: 3, text: 'hilarious'},
+    {id: 4, text: 'sad'}],
     question: "a clown with a red nose is _",
     selected: null,
     throwCount: 0,
@@ -64,7 +66,7 @@ export default {
       }
     },
     throwin (data) {
-      // console.log(data, 'in')
+      this.throwCount--
     }
   }
 }

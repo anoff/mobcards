@@ -1,5 +1,5 @@
 {
-  "name": "smartcards",
+  "name": "mobcards",
   "version": "0.0.1",
   "description": "quick game of cards against humanity from your mobile",
   "main": "index.js",
@@ -78,7 +78,6 @@
     "swing": "^3.1.1",
     "uuid": "^3.2.1",
     "vue": "^2.5.2",
-    "vue-carousel": "^0.7.3",
     "vue-material": "^1.0.0-beta-7",
     "vue-router": "^3.0.1",
     "vue-socket.io": "^2.1.1-b",

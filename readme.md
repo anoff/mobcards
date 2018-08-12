@@ -1,4 +1,4 @@
-# smartcards 📱🃏
+# mobcards 📱🃏
 
 > Play cards with your friends even if you didn't bring any 🚫 🃏 —  but everyone got a smartphone right? 📱
 
@@ -22,11 +22,11 @@ npm run dev-client
 
 ## game design
 
-![usecase diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/smartcards/master/assets/usecase.iuml)
+![usecase diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/mobcards/master/assets/usecase.iuml)
 
 > use cases and interactions
 
-![state machine](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/smartcards/master/assets/state.iuml)
+![state machine](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/mobcards/master/assets/state.iuml)
 
 > game states
 
