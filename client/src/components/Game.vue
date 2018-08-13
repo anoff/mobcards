@@ -7,7 +7,12 @@
       ref="wrapper"
       :config="swingConfig"
     >
-      <v-card v-for="card in cards" v-bind:key="card.id" v-bind:style="{'z-index': card.id, 'margin-left': card.id*5 + 'px', 'margin-top': card.id*5 + 'px' }" :data-id="card.id">
+      <v-card
+      v-for="card in cards"
+      v-bind:key="card.id"
+      v-bind:style="{'z-index': card.id, 'margin-left': card.id*5 + 'px', 'margin-top': card.id*5 + 'px' }"
+      :data-id="card.id"
+      class="card">
         <v-card-title md-solid>
           <span class="card-text" v-html="parseText(question, card.text)"></span>
         </v-card-title>
@@ -72,7 +77,7 @@ export default {
 </script>
 
 <style scoped>
-.v-card {
+.card {
   border-radius: 2em;
   border-color: #f5f5f5;
   border-width: 2px;
