@@ -1,0 +1,15 @@
+{
+  "name": "mobcards",
+  "version": "0.0.1",
+  "scripts": {
+    "client-build": "cd client && npm install && npm run build",
+    "server-build": "cd server && npm install",
+    "now-build": "npm run client-build && npm run server-build",
+    "now-start": "node server/index.js",
+    "publish": "now --public"
+  },
+  "engines": {
+    "node": ">= 7.6.0",
+    "npm": ">= 3.0.0"
+  }
+}

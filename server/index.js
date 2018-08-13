@@ -1,5 +1,6 @@
 global.WAITINGROOM = -1
 const server = require('server')
+const path = require('path')
 const { socket, error } = server.router
 const { status, header } = server.reply
 const ls = new (require('./lib/lobbystore'))()
@@ -36,7 +37,7 @@ setInterval(() => {
 
 // Launch server with options and a couple of routes
 sockets.load(socket, ls) // load socket definitions
-server({ port: PORT, public: './web/dist' }, [
+server({ port: PORT, public: path.join(__dirname, '../client/dist') }, [
   cors,
   socket('connect', ctx => {
     console.log('client connected', ctx.socket.id)

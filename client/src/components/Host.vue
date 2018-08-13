@@ -1,13 +1,14 @@
 <template>
   <v-content>
     <v-btn
-      color="primary"
-      dark
-      absolute
-      bottom
-      right
-      fab
-      @click="createLobby()"
+    absolute
+    dark
+    fab
+    bottom
+    right
+    color="accent"
+    class="bottom-float"
+    @click="createLobby()"
     >
       <v-icon>add</v-icon>
     </v-btn>
@@ -104,5 +105,8 @@ export default {
 }
 .md-list-item-content .md-list-action {
   margin: 0 5px 0 0;
+}
+.bottom-float {
+  margin-bottom: 3em;
 }
 </style>

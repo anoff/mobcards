@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-content>
     <v-dialog
       v-model="promptName"
       persistent
@@ -63,7 +63,7 @@
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
-  </div>
+  </v-content>
 </template>
 
 <script>
@@ -86,7 +86,7 @@ export default {
       lobbyId: this.$route.params.id,
       promptName: false,
       timeout: false,
-      name: localStorage.getItem('smartcards-name'),
+      name: localStorage.getItem('mobcards-name'),
       playerId: this.$socket.id,
       progress: 0,
       timeRemaining: 5
@@ -95,8 +95,9 @@ export default {
   methods: {
     nameConfirm () {
       this.$socket.emit('changeName', { playerId: this.playerId, name: this.name })
-      localStorage.setItem('smartcards-name', this.name) // store so next session will instantiante with previous name
-      sessionStorage.setItem('smartcard-name', this.name) // keep for active session so no more name popups occur
+      localStorage.setItem('mobcards-name', this.name) // store so next session will instantiante with previous name
+      sessionStorage.setItem('mobcards-name', this.name) // keep for active session so no more name popups occur
+      this.promptName = false
     },
     onVote (proceed) {
       console.log(this.players)
@@ -141,9 +142,9 @@ export default {
       // check if name prompt is required for this user
       const me = this.players.find(p => p.id === this.playerId)
       if (!me.name) {
-        console.log(sessionStorage.getItem('smartcard-name'))
-        if (sessionStorage.getItem('smartcard-name')) {
-          this.name = sessionStorage.getItem('smartcard-name')
+        console.log(sessionStorage.getItem('mobcards-name'))
+        if (sessionStorage.getItem('mobcards-name')) {
+          this.name = sessionStorage.getItem('mobcards-name')
           this.$socket.emit('changeName', { name: this.name })
         } else {
           this.promptName = true
