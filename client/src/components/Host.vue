@@ -94,18 +94,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.full-control > .md-list {
-  width: 320px;
-  max-width: 100%;
-  height: 400px;
-  display: inline-block;
-  overflow: auto;
-  border: 1px solid rgba(#000, .12);
-  vertical-align: top;
-}
-.md-list-item-content .md-list-action {
-  margin: 0 5px 0 0;
-}
 .bottom-float {
   margin-bottom: 3em;
 }
