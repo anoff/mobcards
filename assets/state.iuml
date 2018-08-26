@@ -4,13 +4,16 @@
 state "no game" as ng
 state "game open" as go
 state "game active" as ga {
-  state "distribute cards" as cards
-  state "selecting host" as host
-  state "show question" as q
-  q : collecting answers from players
+  state "distribute card decks" as cards
+  state "draw black card" as question
+  question : game chooses question
+  state "select white card" as selection
+  selection : user selects answer from stack
   state "display answers" as a
-  a : players vote on best (except own)
+  a : players vote on best combination
   state "present winner" as win
+  state "refill card deck" as refill
+  refill : replace played cards
 }
 
 [*] -> ng
@@ -19,11 +22,12 @@ go : waiting for players
 go --> go: players join
 go --> ga: 100% players vote
 ga --> cards
-cards : all players get Q&A cards
-cards --> host
-host --> q: host posts a question
-q --> a: players answered
-q --> a: ⏰ timeout
-a --> win: players voted on answers
-win --> cards
+cards : all players get 4 white cards
+cards --> question
+question --> selection: propagate black card
+selection --> a: all players selected
+selection --> a: ⏰ timeout
+a --> win
+win --> refill
+refill --> question
 @enduml

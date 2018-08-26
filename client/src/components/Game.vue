@@ -12,17 +12,26 @@
       v-bind:key="card.id"
       v-bind:style="{'z-index': card.id, 'margin-left': card.id*5 + 'px', 'margin-top': card.id*5 + 'px' }"
       :data-id="card.id"
-      class="card">
-        <v-card-title md-solid>
-          <span class="card-text" v-html="parseText(question, card.text)"></span>
-        </v-card-title>
+      class="mobcard">
+      <v-card-media>
+        <v-container
+          fill-height
+          fluid
+          pa-2
+        >
+          <v-layout fill-height>
+            <v-flex xs12 align-end flexbox>
+              <v-card-title md-solid>
+                <span class="card-text" v-html="parseText(question, card.text)"></span>
+              </v-card-title>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card-media>
         <v-card-actions>
-          <v-btn icon class="primary" @click="selected = card.id" v-bind:class="{ 'accent': selected == card.id }">
-            <v-icon>favorite</v-icon>
-          </v-btn>
-
-          <v-btn icon class="secondary">
-            <v-icon>share</v-icon>
+          <v-spacer></v-spacer>
+          <v-btn icon large class="primary" @click="selected = card.id" v-bind:class="{ 'accent': selected == card.id }">
+            <v-icon>star</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -77,15 +86,14 @@ export default {
 </script>
 
 <style scoped>
-.card {
+.mobcard {
   border-radius: 2em;
   border-color: #f5f5f5;
   border-width: 2px;
   border-style: solid;
   background-color: black;
   max-width: 320px;
-  width: 100%;
-  height: 240px;
+  min-height: 340px;
   margin: 4px;
   display: inline-block;
   vertical-align: top;
@@ -95,7 +103,7 @@ export default {
 }
 .card-text {
   color: white;
-  font-size: 2em;
+  font-size: 3em;
 }
 .card-container {
   position: relative;

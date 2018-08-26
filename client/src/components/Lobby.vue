@@ -6,11 +6,13 @@
     >
       <v-card>
         <v-card-title class="headline">Want to join the lobby?</v-card-title>
-        <v-text-field
-          v-model="name"
-          label="Name"
-          required
-        ></v-text-field>
+        <v-card-content>
+          <v-text-field
+            v-model="name"
+            label="Name"
+            required
+          ></v-text-field>
+        </v-card-content>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" flat @click.native="nameCancel()">Cancel</v-btn>
