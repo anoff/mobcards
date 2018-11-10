@@ -1,0 +1,45 @@
+@startuml player-states
+!includeurl https://raw.github.com/anoff/smartcards/master/assets/style.iuml
+caption Player states
+
+state lobby
+lobby : C:joinGame
+lobby : C:startGame
+lobby : S:transition*
+state "joined" as joined
+joined : S:players*
+joined : C:voteStart
+joined : S:transition*
+state "voted-start" as votedStart
+votedStart : S:transition*
+state started
+started : S:transition*
+started : S:dealCard (white)
+started : S:dealCard* (black)
+state answer
+answer : C:selectCard
+answer : S:answerTimeout*
+answer : S:transition*
+state vote
+answered : S:answers
+vote : C:voteWinner
+vote : S:voteTimeout*
+vote : S:transition*
+state winner
+winner : S:winner
+winner : S:transition*
+
+lobby --> joined
+joined --> votedStart
+votedStart --> started
+started --> answer
+answer --> vote
+vote --> winner
+winner --> answer
+
+legend right
+C:<event> | emitted by client
+S:<event> | emitted by server
+* | broadcast to all game members
+end legend
+@enduml

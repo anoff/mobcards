@@ -33,17 +33,11 @@ npm run dev-client
 ## socket events
 
 All communication between clients and the server happens over websockets and is therefore eventbased. Clients fire an event and the reaction is triggered once the server responds. With high latencies this event driven approach _might_ feel unnatural.
-Below is a list of events and senders (S) / receivers (R)
 
-| event name | backend | host | player | description | payload |
-|------------|---------|------|--------|-------------|---------|
-| browseLobbies | R | S | S | players that are not in a lobby | |
-| startLobby | R       | S    | -      | emitted when creating a lobby | |
-| lobbies | S | R | (R*) | update to available lobbies | [lobbyId] |
-| joinLobby | R | (S) | S | request to join a lobby (creator after reroute to player view) | |
-| lobbyNotFound | S | - | R | attempt to join a lobby that does not exist | |
-| players | S | (R) | R | current players in a lobby, sent to all in a lobby | [players incl. vote status] |
-| voteStart | R | - | S | player votes to start the game | {vote status} |
+There are two different state machine definitions one from the server viewpoint that describes the progress of a single game and one from a client view that describes the current client (UI) state.
+
+![game state machine](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/mobcards/master/assets/game-states.iuml)
+![player state machine](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/anoff/mobcards/master/assets/player-states.iuml)
 
 Payloads updates of type `Array` are always in the form of:
 
