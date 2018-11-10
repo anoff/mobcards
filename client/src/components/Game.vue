@@ -91,7 +91,7 @@ export default {
   border-color: #f5f5f5;
   border-width: 2px;
   border-style: solid;
-  background-color: black;
+  background-color: black !important;
   max-width: 320px;
   min-height: 340px;
   margin: 4px;

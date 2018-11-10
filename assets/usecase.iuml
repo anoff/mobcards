@@ -19,7 +19,7 @@ p0 --> join
 p1 --> join
 p2 --> join
 
-actor "quizmaster (server)" as quizmaster
+actor "game" as quizmaster
 actor "Player #1" as p1a
 actor "Player #2" as p2a
 
@@ -31,7 +31,6 @@ quizmaster --> qs
 p1a --> a
 p2a --> a
 
-quizmaster --> v
 p1a --> v
 p2a --> v
 @enduml
