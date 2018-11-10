@@ -11,5 +11,6 @@ skinparam {
   stateEndColor           red
   usecaseBackgroundColor  lavender
   usecaseBorderColor      black
+  legendBackgroundColor white
 }
 @enduml
