@@ -47,6 +47,8 @@ Payloads updates of type `Array` are always in the form of:
 
 where `add` is a list of players/votes/cards that were added, `remove` resources that have to be removed from local state and `status` is a complete update of the state that should overwrite local state.
 
+A special `ACK` event is emitted by the server in response to a client message that modifies state, e.g. voting on start, choosing a card.
+
 ## License
 
 Cards taken from [crhallbergs collection of decks](https://github.com/crhallberg/json-against-humanity). The originals, his collection as well as all derivatives within this project are licensed under [CC BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/).

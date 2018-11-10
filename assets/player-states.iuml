@@ -5,11 +5,10 @@ caption Player states
 state lobby
 lobby : C:joinGame
 lobby : C:startGame
-lobby : S:transition*
+lobby : S:transition
 state "joined" as joined
 joined : S:players*
 joined : C:voteStart
-joined : S:transition*
 state "voted-start" as votedStart
 votedStart : S:transition*
 state started
@@ -21,21 +20,23 @@ answer : C:selectCard
 answer : S:answerTimeout*
 answer : S:transition*
 state vote
-answered : S:answers
+vote : S:answers
 vote : C:voteWinner
 vote : S:voteTimeout*
-vote : S:transition*
+state "voted-winner" as votedWinner
+votedWinner : S:voteTimeout*
+votedWinner : S:transition*
 state winner
 winner : S:winner
 winner : S:transition*
 
-lobby --> joined
-joined --> votedStart
-votedStart --> started
-started --> answer
-answer --> vote
-vote --> winner
-winner --> answer
+lobby --> joined: S:transition
+joined --> votedStart: S:ACK
+votedStart --> started: S:transition*
+started --> answer: S:transition*
+answer --> vote: S:transition*
+vote --> winner: s:transition*
+winner --> answer: s:transition*
 
 legend right
 C:<event> | emitted by client
