@@ -1,6 +1,6 @@
 @startuml start
 !includeurl https://raw.github.com/anoff/smartcards/master/assets/style.iuml
-
+caption Usecase diagram displaying actors and actions
 actor Host as p0
 actor "Player #1" as p1
 actor "Player #2" as p2

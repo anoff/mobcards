@@ -1,6 +1,6 @@
 @startuml qa
 !includeurl https://raw.github.com/anoff/smartcards/master/assets/style.iuml
-
+caption High level game design state machine
 state "no game" as ng
 state "game open" as go
 state "game active" as ga {
