@@ -17,7 +17,7 @@
     "vue-router": "^3.0.1",
     "vue-socket-io": "^0.3.2",
     "vue-socket.io": "^3.0.7",
-    "vue-swing": "0.0.9",
+    "vue-swing": "0.0.10",
     "vuetify": "^1.1.10",
     "vuex": "^3.1.1"
   },
